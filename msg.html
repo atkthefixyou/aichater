@@ -3928,7 +3928,7 @@ async function callGemini(userMsg, imageBase64 = null, imageMimeType = null) {
 
   let res;
   try {
-    res = await fetch(`https://aichater-backend.onrender.com/api/gemini/${model}`, {
+    res = await fetch(`https://aichater-backend.onrender.com/api/gemini/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       signal: controller.signal,
@@ -3991,7 +3991,7 @@ async function callGroq(userMsg) {
 
   let res;
   try {
-    res = await fetch('https://aichater-backend.onrender.com/api/groq', {
+    res = await fetch('https://aichater-backend.onrender.com/api/groq/fast', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -4057,7 +4057,7 @@ async function callOpenRouter(userMsg, imageBase64 = null, imageMimeType = null)
 
   let res;
   try {
-    res = await fetch('https://aichater-backend.onrender.com/api/openrouter', {
+    res = await fetch('https://aichater-backend.onrender.com/api/openrouter/alpha', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

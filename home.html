@@ -2741,10 +2741,8 @@ function closeModal() {
 
 // ── PHÂN TÍCH ẢNH BẰNG GEMINI VISION ──────────────
 async function analyzeImageWithGemini(imageFile, characterName, userDescription) {
-  const GEMINI_KEY = 'AQ.Ab8RN6I186oFfdw1XGXeEfN4ypPC_aU8ABUUrATpBW8QBXkmSg';
-  const model = 'gemini-3.1-flash-lite';
-  
-  // Chuyển ảnh thành base64
+ const model = 'vision';
+ 
   const base64Image = await new Promise((resolve) => {
     const reader = new FileReader();
     reader.onload = (e) => resolve(e.target.result.split(',')[1]);
@@ -2775,7 +2773,7 @@ ${userDescription || 'Không có mô tả'}
 }`;
 
   // Gọi Gemini Vision API
-  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`, {
+  const res = await fetch(`https://aichater-backend.onrender.com/api/gemini/vision`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
