@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Đang kết nối Spotify...</title>
+<style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #121212;
+    color: #fff;
+    font-family: -apple-system, sans-serif;
+  }
+  .box { text-align: center; }
+  .spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid rgba(255,255,255,0.2);
+    border-top-color: #1DB954;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 16px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  p { color: rgba(255,255,255,0.7); font-size: 14px; }
+</style>
+</head>
+<body>
+  <div class="box">
+    <div class="spinner"></div>
+    <p id="status-text">Đang xác thực với Spotify...</p>
+  </div>
+
+<script>
+(async function () {
+  const statusText = document.getElementById('status-text');
+
+  function parseHashOrQuery() {
+    const params = new URLSearchParams(location.search);
+    return {
+      code: params.get('code'),
+      state: params.get('state'),
+      error: params.get('error')
+    };
+  }
+
+  const { code, state, error } = parseHashOrQuery();
+
+  if (error) {
+    statusText.textContent = 'Bạn đã huỷ đăng nhập Spotify.';
+    setTimeout(() => window.close() || (location.href = 'msg.html'), 1500);
+    return;
+  }
+
+  const savedState = localStorage.getItem('spotify_auth_state');
+  const codeVerifier = localStorage.getItem('spotify_code_verifier');
+
+  if (!code || !savedState || state !== savedState || !codeVerifier) {
+    statusText.textContent = 'Lỗi xác thực. Vui lòng thử lại.';
+    setTimeout(() => { location.href = 'msg.html'; }, 1500);
+    return;
+  }
+
+  const CLIENT_ID = 'efbc230eec5a44f1864e6e7f5e81388f';
+  const REDIRECT_URI = 'https://aichater.html-5.me/spotify-callback.html';
+
+  try {
+    const res = await fetch('https://accounts.spotify.com/api/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        grant_type: 'authorization_code',
+        code: code,
+        redirect_uri: REDIRECT_URI,
+        client_id: CLIENT_ID,
+        code_verifier: codeVerifier
+      })
+    });
+
+    const data = await res.json();
+
+    if (data.access_token) {
+      const expiresAt = Date.now() + (data.expires_in * 1000);
+      localStorage.setItem('spotify_access_token', data.access_token);
+      localStorage.setItem('spotify_refresh_token', data.refresh_token || '');
+      localStorage.setItem('spotify_token_expires_at', String(expiresAt));
+      localStorage.removeItem('spotify_auth_state');
+      localStorage.removeItem('spotify_code_verifier');
+
+      statusText.textContent = 'Kết nối thành công! Đang quay lại...';
+      setTimeout(() => {
+        if (window.opener) {
+          // Trường hợp web thường: popup thật, báo cho tab cha rồi đóng
+          window.opener.postMessage({ type: 'spotify-auth-success' }, '*');
+          window.close();
+        } else {
+          // Trường hợp app (Capacitor deep link): quay lại đúng trang đã mở Spotify,
+          // kèm cờ để trang đó tự mở lại popup Spotify hiển thị trạng thái mới
+          const returnPage = localStorage.getItem('spotify_return_page') || 'home.html';
+          localStorage.setItem('spotify_just_connected', '1');
+          location.href = returnPage;
+        }
+      }, 800);
+    } else {
+      statusText.textContent = 'Không lấy được token: ' + JSON.stringify(data);
+    }
+  } catch (e) {
+    statusText.textContent = 'Lỗi kết nối: ' + e.message;
+  }
+})();
+</script>
+</body>
+</html>

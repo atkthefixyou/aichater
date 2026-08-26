@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>AIChater - Thiết lập</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --bg: #0d0d0d;
+  --surface: #161616;
+  --surface2: #1e1e1e;
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.14);
+  --text: #f0f0f0;
+  --muted: #666;
+  --muted2: #999;
+  --accent: #ffffff;
+  --accent2: #dddddd;
+  --accent-glow: rgba(255,255,255,0.1);
+}
+
+html,
+body {
+  height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(255,255,255,0.04) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+#app {
+  position: relative;
+  z-index: 1;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== HEADER ===== */
+.ob-header {
+  padding: 52px 24px 0;
+  flex-shrink: 0;
+}
+
+.ob-logo {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  background: linear-gradient(90deg, #ff6b6b, #ffa94d, #ffe066, #69db7c, #4dabf7, #9775fa, #f06595);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.ob-progress {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 32px;
+}
+
+.ob-bar {
+  flex: 1;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--surface2);
+  transition: background 0.3s;
+}
+
+.ob-bar.done {
+  background: var(--accent);
+}
+
+.ob-bar.active {
+  background: rgba(192,132,252,0.4);
+}
+
+.ob-step-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 10px;
+  letter-spacing: 0.05em;
+}
+
+.ob-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+  margin-bottom: 6px;
+  letter-spacing: -0.02em;
+}
+
+.ob-sub {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--muted2);
+  line-height: 1.5;
+}
+
+/* ===== CONTENT ===== */
+.ob-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px 24px 16px;
+}
+
+.ob-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===== FOOTER ===== */
+.ob-footer {
+  padding: 12px 24px 36px;
+  flex-shrink: 0;
+}
+
+.ob-btn {
+  width: 100%;
+  height: 52px;
+  background: var(--accent2);
+  border: none;
+  border-radius: 14px;
+  color: white;
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.15s;
+  letter-spacing: -0.01em;
+}
+
+.ob-btn:active {
+  transform: scale(0.97);
+  opacity: 0.88;
+}
+
+.ob-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* ===== GENDER CARDS ===== */
+.gender-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gender-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.15s;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+.gender-card:active {
+  transform: scale(0.98);
+}
+
+.gender-card.on {
+  background: var(--accent-glow);
+  border-color: var(--accent);
+}
+
+.gender-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.gender-card.on .gender-label {
+  color: var(--accent);
+}
+
+.gender-radio {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.gender-card.on .gender-radio {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.gender-radio::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.gender-card.on .gender-radio::after {
+  opacity: 1;
+}
+
+/* ===== DATE PICKER ===== */
+.dob-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dob-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted2);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.dob-row {
+  display: flex;
+  gap: 10px;
+}
+
+.dob-select-wrap {
+  flex: 1;
+  position: relative;
+}
+
+.dob-select {
+  width: 100%;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 13px 14px;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.dob-select:focus {
+  border-color: var(--accent);
+}
+
+.dob-select option {
+  background: rgba(255,255,255,0.07);
+}
+
+.dob-select-wrap::after {
+  content: '';
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid var(--muted);
+  pointer-events: none;
+}
+
+.dob-hint {
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 4px;
+}
+
+/* ===== INTERESTS ===== */
+.interest-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.int-chip {
+  padding: 9px 16px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border2);
+  background: var(--surface);
+  color: var(--muted2);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+.int-chip:active {
+  transform: scale(0.95);
+}
+
+.int-chip.on {
+  background: var(--accent-glow);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.int-note {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  margin-top: 16px;
+  line-height: 1.5;
+  padding: 12px 14px;
+  background: var(--surface);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+/* ===== STEP TRANSITIONS ===== */
+.ob-step {
+  display: none;
+}
+
+.ob-step.active {
+  display: block;
+}
+
+/* ===== DONE SCREEN ===== */
+.done-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 0;
+}
+
+.done-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--accent-glow);
+  border: 2px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin-bottom: 24px;
+}
+
+.done-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.done-sub {
+  font-size: 14px;
+  color: var(--muted2);
+  line-height: 1.6;
+  max-width: 260px;
+}
+
+</style>
+</head>
+<body>
+<div id="app">
+
+  <div class="ob-header">
+    <div class="ob-logo">AIChater</div>
+    <div class="ob-progress">
+      <div class="ob-bar active" id="bar-0"></div>
+      <div class="ob-bar" id="bar-1"></div>
+      <div class="ob-bar" id="bar-2"></div>
+    </div>
+    <div class="ob-step-label" id="step-label">Bước 1 / 3</div>
+    <div class="ob-title" id="step-title">Bạn là ai?</div>
+    <div class="ob-sub" id="step-sub">Giúp chúng tôi hiểu bạn hơn để gợi ý nhân vật phù hợp.</div>
+  </div>
+
+  <div class="ob-content">
+
+    <!-- STEP 0: GIOI TINH -->
+    <div class="ob-step active" id="step-0">
+      <div class="gender-grid">
+        <div class="gender-card" data-v="nam">
+          <span class="gender-label">Nam</span>
+          <div class="gender-radio"></div>
+        </div>
+        <div class="gender-card" data-v="nu">
+          <span class="gender-label">Nữ</span>
+          <div class="gender-radio"></div>
+        </div>
+        <div class="gender-card" data-v="khac">
+          <span class="gender-label">Tôi không muốn trả lời</span>
+          <div class="gender-radio"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 1: NGAY SINH -->
+    <div class="ob-step" id="step-1">
+      <div class="dob-wrap">
+        <div>
+          <div class="dob-label">Ngày sinh của bạn</div>
+          <div class="dob-row">
+            <div class="dob-select-wrap" style="flex:1">
+              <select class="dob-select" id="dob-day">
+                <option value="">Ngày</option>
+              </select>
+            </div>
+            <div class="dob-select-wrap" style="flex:1.4">
+              <select class="dob-select" id="dob-month">
+                <option value="">Tháng</option>
+                <option value="1">Tháng 1</option>
+                <option value="2">Tháng 2</option>
+                <option value="3">Tháng 3</option>
+                <option value="4">Tháng 4</option>
+                <option value="5">Tháng 5</option>
+                <option value="6">Tháng 6</option>
+                <option value="7">Tháng 7</option>
+                <option value="8">Tháng 8</option>
+                <option value="9">Tháng 9</option>
+                <option value="10">Tháng 10</option>
+                <option value="11">Tháng 11</option>
+                <option value="12">Tháng 12</option>
+              </select>
+            </div>
+            <div class="dob-select-wrap" style="flex:1.6">
+              <select class="dob-select" id="dob-year">
+                <option value="">Năm</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="dob-hint" id="age-hint"></div>
+      </div>
+    </div>
+
+    <!-- STEP 2: SO THICH -->
+    <div class="ob-step" id="step-2">
+      <div class="interest-grid" id="interest-grid">
+        <button class="int-chip" data-v="tinh-yeu">Tình yêu</button>
+        <button class="int-chip" data-v="ban-be">Bạn bè</button>
+        <button class="int-chip" data-v="anh-em">Anh em chí cốt</button>
+        <button class="int-chip" data-v="yandere">Yandere</button>
+        <button class="int-chip" data-v="tsundere">Tsundere</button>
+        <button class="int-chip" data-v="hang-xom">Hàng xóm</button>
+        <button class="int-chip" data-v="giao-vien">Giáo viên</button>
+        <button class="int-chip" data-v="bo-me">Bố mẹ</button>
+        <button class="int-chip" data-v="nguoi-than">Người thân</button>
+        <button class="int-chip" data-v="dongnghiep">Đồng nghiệp</button>
+        <button class="int-chip" data-v="idol">Idol Nổi tiếng</button>
+        <button class="int-chip" data-v="ky-ao">Thế giới kỳ ảo</button>
+      </div>
+      <div class="int-note">
+        Chọn những gì bạn thích -- sẽ dùng để gợi ý nhân vật trên trang chủ. Có thể đổi sau trong phần hồ sơ.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ob-footer">
+    <button class="ob-btn" id="next-btn" disabled>Tiếp theo</button>
+  </div>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+import { getFirestore, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+import { autoReloadOnSync, broadcastReload } from './sync.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA_XJP_fmStr4GYA7pD51I_SS5TXeDXdUM",
+  authDomain: "aichat-fc13c.firebaseapp.com",
+  projectId: "aichat-fc13c",
+  storageBucket: "aichat-fc13c.firebasestorage.app",
+  messagingSenderId: "177676055139",
+  appId: "1:177676055139:web:f504149bdea3ce7b6cfe56"
+};
+
+const app   = initializeApp(firebaseConfig);
+const auth  = getAuth(app);
+const db    = getFirestore(app);
+
+let currentUser = null;
+onAuthStateChanged(auth, user => {
+  if (!user) { window.location.href = 'index.html'; return; }
+  currentUser = user;
+});
+
+// ── STATE ──────────────────────────────────────────
+let step = 0;
+let gioiTinh = null;
+let ngaySinh = { day: '', month: '', year: '' };
+let soThich  = [];
+
+const STEPS = [
+  {
+    label: 'Bước 1 / 3',
+    title: 'Bạn là ai?',
+    sub:   'Giúp chúng tôi hiểu bạn hơn để gợi ý nhân vật phù hợp.'
+  },
+  {
+    label: 'Bước 2 / 3',
+    title: 'Ngày sinh của bạn?',
+    sub:   'Để xác nhận độ tuổi và hiển thị nội dung phù hợp.'
+  },
+  {
+    label: 'Bước 3 / 3',
+    title: 'Bạn thích nhân vật như thế nào?',
+    sub:   'Chọn nhiều loại nếu muốn. Có thể chỉnh sau.'
+  }
+];
+
+// ── POPULATE SELECTS ───────────────────────────────
+const dayEl   = document.getElementById('dob-day');
+const yearEl  = document.getElementById('dob-year');
+
+for (let d = 1; d <= 31; d++) {
+  const o = document.createElement('option');
+  o.value = d; o.textContent = d;
+  dayEl.appendChild(o);
+}
+
+const thisYear = new Date().getFullYear();
+for (let y = thisYear; y >= 1950; y--) {
+  const o = document.createElement('option');
+  o.value = y; o.textContent = y;
+  yearEl.appendChild(o);
+}
+
+// ── GENDER ────────────────────────────────────────
+document.querySelectorAll('.gender-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.gender-card').forEach(c => c.classList.remove('on'));
+    card.classList.add('on');
+    gioiTinh = card.dataset.v;
+    checkNext();
+  });
+});
+
+// ── DOB ───────────────────────────────────────────
+function calcAge(d, m, y) {
+  const today = new Date();
+  const dob   = new Date(y, m - 1, d);
+  let age = today.getFullYear() - dob.getFullYear();
+  const monthDiff = today.getMonth() - dob.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) age--;
+  return age;
+}
+
+function onDobChange() {
+  ngaySinh.day   = dayEl.value;
+  ngaySinh.month = document.getElementById('dob-month').value;
+  ngaySinh.year  = yearEl.value;
+  const hint = document.getElementById('age-hint');
+  if (ngaySinh.day && ngaySinh.month && ngaySinh.year) {
+    const age = calcAge(+ngaySinh.day, +ngaySinh.month, +ngaySinh.year);
+    if (age < 0 || age > 120) {
+      hint.textContent = 'Ngày sinh không hợp lệ.';
+      hint.style.color = '#f87171';
+    } else {
+      hint.textContent = `${age} tuổi`;
+      hint.style.color = '#dddddd';
+    }
+  } else {
+    hint.textContent = '';
+  }
+  checkNext();
+}
+
+dayEl.addEventListener('change', onDobChange);
+document.getElementById('dob-month').addEventListener('change', onDobChange);
+yearEl.addEventListener('change', onDobChange);
+
+// ── INTERESTS ─────────────────────────────────────
+document.querySelectorAll('.int-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    chip.classList.toggle('on');
+    const v = chip.dataset.v;
+    if (soThich.includes(v)) soThich = soThich.filter(x => x !== v);
+    else soThich.push(v);
+    checkNext();
+  });
+});
+
+// ── NAV ───────────────────────────────────────────
+function checkNext() {
+  const btn = document.getElementById('next-btn');
+  if (step === 0) btn.disabled = !gioiTinh;
+  else if (step === 1) btn.disabled = !(ngaySinh.day && ngaySinh.month && ngaySinh.year && document.getElementById('age-hint').style.color !== 'rgb(248, 113, 113)');
+  else if (step === 2) btn.disabled = soThich.length === 0;
+}
+
+function updateHeader() {
+  const s = STEPS[step];
+  document.getElementById('step-label').textContent = s.label;
+  document.getElementById('step-title').textContent = s.title;
+  document.getElementById('step-sub').textContent   = s.sub;
+  document.querySelectorAll('.ob-bar').forEach((bar, i) => {
+    bar.classList.remove('done', 'active');
+    if (i < step)  bar.classList.add('done');
+    if (i === step) bar.classList.add('active');
+  });
+}
+
+function goStep(n) {
+  document.getElementById('step-' + step).classList.remove('active');
+  step = n;
+  document.getElementById('step-' + step).classList.add('active');
+  updateHeader();
+  checkNext();
+
+  const btn = document.getElementById('next-btn');
+  btn.textContent = step === 2 ? 'Bắt đầu khám phá' : 'Tiếp theo';
+}
+
+document.getElementById('next-btn').addEventListener('click', async () => {
+  if (step < 2) { goStep(step + 1); return; }
+
+  // Luu vao Firestore
+  const btn = document.getElementById('next-btn');
+  btn.disabled = true;
+  btn.textContent = 'Đang lưu...';
+
+  try {
+    const age = calcAge(+ngaySinh.day, +ngaySinh.month, +ngaySinh.year);
+    await updateDoc(doc(db, 'users', currentUser.uid), {
+      gioiTinh,
+      ngaySinh: `${ngaySinh.day}/${ngaySinh.month}/${ngaySinh.year}`,
+      tuoi: age,
+      soThich,
+      onboardingDone: true
+    });
+    window.location.href = 'home.html';
+  } catch(e) {
+    alert('Lỗi lưu dữ liệu: ' + e.message);
+    btn.disabled = false;
+    btn.textContent = 'Bắt đầu khám phá';
+  }
+});
+
+autoReloadOnSync();
+  
+</script>
+</body>
+</html>

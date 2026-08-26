@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.aichater.app",
+      "sha256_cert_fingerprints": [
+        "AE:E5:D6:64:53:89:AF:31:E3:B8:0F:BF:81:30:8F:49:83:02:62:5A:83:67:F3:E4:BD:8D:05:D5:AB:0D:D0:3E"
+      ]
+    }
+  }
+]

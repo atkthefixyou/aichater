@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Trang cá nhân</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    background: #0a0a0c;
+    color: #fff;
+    font-family: 'Inter', -apple-system, sans-serif;
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  #app {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ===== HEADER ===== */
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 48px 16px 14px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(10,10,12,0.85);
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+  }
+  .header-back {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .header-title {
+    flex: 1;
+    font-size: 19px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .header-link-btn {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #fff;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  /* ===== PROFILE HEAD ===== */
+  .profile-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 20px 4px;
+  }
+  .profile-av {
+    width: 108px;
+    height: 108px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: rgba(255,255,255,0.08);
+    border: 2px solid rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .profile-av img { width: 100%; height: 100%; object-fit: cover; }
+
+  .profile-name {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 18px;
+  }
+
+  .profile-stats {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 22px;
+  }
+  .profile-stat { text-align: center; }
+  .profile-stat-num { font-size: 22px; font-weight: 800; }
+  .profile-stat-label { font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+  .profile-stat-divider {
+    width: 1px;
+    height: 32px;
+    background: rgba(255,255,255,0.15);
+  }
+
+  /* ===== SECTION HEADER (Nhân vật công khai + toggle 18+) ===== */
+  .section-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px 10px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .section-title {
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+  }
+  .nsfw-toggle-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .nsfw-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.08);
+    padding: 3px 8px;
+    border-radius: 6px;
+  }
+  .nsfw-switch {
+    width: 42px;
+    height: 24px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.15);
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .nsfw-switch.on { background: #e0537a; }
+  .nsfw-switch .dot {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    transition: transform 0.2s;
+  }
+  .nsfw-switch.on .dot { transform: translateX(18px); }
+
+  /* ===== TABS (chỉ giữ "Tất cả") ===== */
+  .filter-tabs {
+    display: flex;
+    gap: 8px;
+    padding: 0 16px 14px;
+  }
+  .filter-tab {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #fff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 9px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  .filter-tab.active {
+    background: #e0537a;
+    border-color: #e0537a;
+  }
+
+  /* ===== GRID CARDS ===== */
+  .char-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 0 16px 40px;
+  }
+
+  .char-card {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    cursor: pointer;
+  }
+
+  .char-card-img-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1.05;
+    background: rgba(255,255,255,0.06);
+  }
+  .char-card-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .char-card-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .char-gender-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+  }
+  .char-gender-badge.nu { color: #ff8fb3; }
+  .char-gender-badge.nam { color: #6fb3ff; }
+
+  .char-comment-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(6px);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .char-card-name {
+    padding: 10px 10px 4px;
+    font-size: 14.5px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .char-card-chat-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin: 8px 10px 10px;
+    padding: 9px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .char-card-chat-btn:active { opacity: 0.8; }
+
+  /* ===== EMPTY / LOADING STATES ===== */
+  .state-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 60px 24px;
+    color: rgba(255,255,255,0.5);
+    gap: 10px;
+  }
+  .state-icon { font-size: 32px; color: rgba(255,255,255,0.25); }
+  .state-title { font-size: 15px; font-weight: 700; color: rgba(255,255,255,0.75); }
+  .state-sub { font-size: 13px; line-height: 1.5; max-width: 260px; }
+
+  .spinner {
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(255,255,255,0.2);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="header">
+    <button class="header-back" id="back-btn"><i class="fa-solid fa-arrow-left"></i></button>
+    <div class="header-title" id="header-title">...</div>
+    <button class="header-link-btn" id="copy-link-btn" title="Sao chép liên kết"><i class="fa-solid fa-link"></i></button>
+  </div>
+
+  <div class="profile-head">
+    <div class="profile-av" id="profile-av"></div>
+    <div class="profile-name" id="profile-name">...</div>
+    <div class="profile-stats">
+      <div class="profile-stat">
+        <div class="profile-stat-num" id="stat-characters">0</div>
+        <div class="profile-stat-label">nhân vật</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-bar">
+    <div class="section-title">Nhân vật công khai</div>
+    <div class="nsfw-toggle-wrap">
+      <span class="nsfw-label">18+</span>
+      <div class="nsfw-switch" id="nsfw-switch"><div class="dot"></div></div>
+    </div>
+  </div>
+
+  <div class="filter-tabs">
+    <button class="filter-tab active" data-tab="public">Tất cả</button>
+    <button class="filter-tab" data-tab="private" id="private-tab-btn" style="display:none">
+      <i class="fa-solid fa-lock" style="font-size:11px;margin-right:5px"></i>Riêng tư
+    </button>
+  </div>
+
+  <div class="char-grid" id="char-grid">
+    <div class="state-box" style="grid-column: 1 / -1;">
+      <div class="spinner"></div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+import { checkForUpdate } from './updateCheck.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA_XJP_fmStr4GYA7pD51I_SS5TXeDXdUM",
+  authDomain: "aichat-fc13c.firebaseapp.com",
+  projectId: "aichat-fc13c",
+  storageBucket: "aichat-fc13c.firebasestorage.app",
+  messagingSenderId: "177676055139",
+  appId: "1:177676055139:web:f504149bdea3ce7b6cfe56"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+checkForUpdate(db);
+
+const params = new URLSearchParams(location.search);
+const creatorUid = params.get('uid');
+
+let allCharacters = [];
+let showNSFW = false;
+let isOwnProfile = false; // chỉ true nếu người đang xem trang chính là chủ nhân trang này
+let currentViewerUid = null;
+
+document.getElementById('back-btn').addEventListener('click', () => {
+  if (window.history.length > 1) window.history.back();
+  else window.location.href = 'home.html';
+});
+
+document.getElementById('copy-link-btn').addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText(location.href);
+    const btn = document.getElementById('copy-link-btn');
+    btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+    setTimeout(() => { btn.innerHTML = '<i class="fa-solid fa-link"></i>'; }, 1500);
+  } catch (e) {}
+});
+
+document.getElementById('nsfw-switch').addEventListener('click', () => {
+  showNSFW = !showNSFW;
+  document.getElementById('nsfw-switch').classList.toggle('on', showNSFW);
+  renderCharacters();
+});
+
+function genderIcon(gender) {
+  if (gender === 'nam') return '<i class="fa-solid fa-mars"></i>';
+  return '<i class="fa-solid fa-venus"></i>';
+}
+
+let activeTab = 'public';
+
+function renderPrivateTabVisibility() {
+  const privateBtn = document.getElementById('private-tab-btn');
+  privateBtn.style.display = isOwnProfile ? 'inline-flex' : 'none';
+}
+
+document.querySelectorAll('.filter-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    activeTab = btn.dataset.tab;
+    document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderCharacters();
+  });
+});
+
+function renderCharacters() {
+  const grid = document.getElementById('char-grid');
+  const sourceList = activeTab === 'private' ? privateCharacters : allCharacters;
+  const filtered = sourceList.filter(c => showNSFW || !(c.tags || []).includes('nsfw'));
+
+  if (!filtered.length) {
+    const emptyText = activeTab === 'private'
+      ? { title: 'Chưa có nhân vật riêng tư', sub: 'Nhân vật bạn đặt Riêng tư sẽ xuất hiện ở đây, chỉ mình bạn thấy được.' }
+      : { title: 'Chưa có nhân vật nào', sub: 'Người này chưa công khai nhân vật nào.' };
+    grid.innerHTML = `
+      <div class="state-box" style="grid-column: 1 / -1;">
+        <div class="state-icon"><i class="fa-solid fa-user-slash"></i></div>
+        <div class="state-title">${emptyText.title}</div>
+        <div class="state-sub">${emptyText.sub}</div>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(c => {
+    const avatarHtml = c.avatarUrl
+      ? `<img src="${c.avatarUrl}" alt="" onerror="this.parentElement.innerHTML='<div class=&quot;char-card-fallback&quot;>${c.name.charAt(0).toUpperCase()}</div>'">`
+      : `<div class="char-card-fallback">${c.name.charAt(0).toUpperCase()}</div>`;
+    const privateBadge = activeTab === 'private' ? `<div class="char-gender-badge" style="right:36px;left:auto;background:rgba(0,0,0,0.7)"><i class="fa-solid fa-lock" style="font-size:10px"></i></div>` : '';
+    return `
+      <div class="char-card" data-id="${c.id}">
+        <div class="char-card-img-wrap">
+          ${avatarHtml}
+          <div class="char-gender-badge ${c.gender === 'nam' ? 'nam' : 'nu'}">${genderIcon(c.gender)}</div>
+          <div class="char-comment-badge"><i class="fa-regular fa-comment"></i> ${c.chatCount || 0}</div>
+        </div>
+        <div class="char-card-name">${c.name}</div>
+        <button class="char-card-chat-btn" data-id="${c.id}"><i class="fa-regular fa-comment-dots"></i> Chat</button>
+      </div>
+    `;
+  }).join('');
+
+  grid.querySelectorAll('.char-card-chat-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.location.href = `msg.html?id=${btn.dataset.id}`;
+    });
+  });
+  grid.querySelectorAll('.char-card').forEach(card => {
+    card.addEventListener('click', () => {
+      window.location.href = `msg.html?id=${card.dataset.id}`;
+    });
+  });
+}
+
+let privateCharacters = [];
+
+async function loadCreatorProfile() {
+  if (!creatorUid) {
+    document.getElementById('header-title').textContent = 'Không tìm thấy';
+    document.getElementById('char-grid').innerHTML = `
+      <div class="state-box" style="grid-column: 1 / -1;">
+        <div class="state-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div class="state-title">Thiếu thông tin người dùng</div>
+      </div>`;
+    return;
+  }
+
+  try {
+    const userSnap = await getDoc(doc(db, 'users', creatorUid));
+    const userData = userSnap.exists() ? userSnap.data() : {};
+    const displayName = userData.ten || 'Người dùng ẩn danh';
+
+    document.getElementById('header-title').textContent = displayName;
+    document.getElementById('profile-name').textContent = displayName;
+
+    const avEl = document.getElementById('profile-av');
+    if (userData.avatarUrl) {
+      avEl.innerHTML = `<img src="${userData.avatarUrl}" alt="">`;
+    } else {
+      avEl.textContent = displayName.charAt(0).toUpperCase();
+    }
+
+    const q = query(collection(db, 'characters'), where('creatorId', '==', creatorUid));
+    const snap = await getDocs(q);
+
+    allCharacters = [];
+    privateCharacters = [];
+
+    snap.forEach(d => {
+      const data = d.data();
+      if (data.visibility === 'public') {
+        allCharacters.push({ id: d.id, ...data });
+      } else if (isOwnProfile) {
+        // Nhân vật riêng tư -> chỉ đưa vào danh sách nếu đúng là chính chủ đang xem trang
+        privateCharacters.push({ id: d.id, ...data });
+      }
+    });
+
+    document.getElementById('stat-characters').textContent = allCharacters.length + privateCharacters.length;
+
+    renderPrivateTabVisibility();
+    renderCharacters();
+  } catch (err) {
+    console.error('Lỗi tải trang cá nhân:', err.code || err.message, err);
+    document.getElementById('char-grid').innerHTML = `
+      <div class="state-box" style="grid-column: 1 / -1;">
+        <div class="state-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <div class="state-title">Có lỗi xảy ra</div>
+        <div class="state-sub">Không thể tải trang cá nhân này.</div>
+      </div>`;
+  }
+}
+
+// Chỉ Auth xong mới biết chắc ai đang xem trang, tránh lộ private trước khi xác nhận
+onAuthStateChanged(auth, (user) => {
+  currentViewerUid = user ? user.uid : null;
+  isOwnProfile = !!(user && creatorUid && user.uid === creatorUid);
+  loadCreatorProfile();
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"/>
+  <title>Đăng nhập vào..</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;900&display=swap');
+
+/* Body */
+body {
+  font-family: 'Poppins', Sans-Serif;
+  background-image: url('mobile1.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  
+}
+
+/* grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.poppins-semibold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.poppins-black {
+  font-family: "Poppins", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 99;
+  backdrop-filter: blur(3px);
+  border-radius: 16px;
+}
+
+.logo{
+  font-size: 2em;
+  color: #fff;
+  user-select: none;
+}
+/* nút đăng nhập */
+.thanhtren .nutdangnhap{
+  width: 130px;
+  height: 50px;
+  background: transparent;
+  border: 2px solid #fff;
+  outline: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.1em;
+  color: #fff;
+  font-weight: 500;
+  margin-left: 40px;
+  transition: background-color 0.2s;
+}
+
+.thanhtren .nutdangnhap:hover,
+.thanhtren .nutdangnhap:active{
+  background: #fff;
+  color: #162938;
+}
+
+.thanhtren .nut-dang-nhap:focus{
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+/* Khung */
+.khung{
+  position: relative;
+  width: 400px;
+  height: 390px;
+  top: 50px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, .5);
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 0 30px rgba(0, 0, 0, .5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transform: scale(0);
+  transition: transform .5s ease, height .2s ease;
+}
+
+/* Khung active cho js */
+.khung.bat{
+  height: 474px;
+}
+
+.khung.bat-popup{
+  transform: scale(1);
+}
+
+.khung.bat .khung-login{
+  transition: none;
+  transform: translateX(-400px);
+}
+
+/* Khung reg */
+.khung .khung-reg{
+  position: absolute;
+  transition: none;
+  transform: translateX(400px);
+}
+
+.khung.bat .khung-reg{
+  transition: transform .18s ease;
+  transform: translateX(0);
+}
+
+/* Khung login */
+.khung .khung-login{
+  width: 100%;
+  padding: 40px;
+  transition: transform .18s ease;
+  transform: translateX(0);
+}
+
+/* Icon tắt login và reg */
+.khung .icon-tat{
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 45px;
+  height: 45px;
+  background: #162938;
+  font-size: 2em;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom-left-radius: 20px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+/* Khung login */
+.khung-login h2{
+  font-size: 2em;
+  color: #162938;
+  text-align: center;
+}
+
+.khung-login-kieu{
+  position: relative;
+  width: 100%;
+  height: 50px;
+  border-bottom: 2px solid #162938;
+  margin: 30px 0%;
+}
+
+.khung-login-kieu label{
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  font-size: 1em;
+  color: #162938;
+  font-weight: 500;
+  pointer-events: none;
+  transition: .5s;
+}
+
+.khung-login-kieu input:focus~label,
+.khung-login-kieu input:valid~label {
+  top: -5px;
+}
+
+.khung-login-kieu input{
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 1em;
+  color: #162938;
+  font-weight: 600;
+  padding: 0 35px 0 5px;
+}
+
+.khung-login-kieu .icon{
+  position: absolute;
+  right: 8px;
+  font-size: 1.2em;
+  color: #162938;
+  line-height: 57px;
+}
+
+.quenmatkhau{
+  font-size: .9em;
+  color: #162938;
+  font-weight: 500;
+  margin: -15px 0 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.quenmatkhau a{
+  color: #162938;
+  text-decoration: none;
+}
+
+.quenmatkhau a:hover{
+  text-decoration: underline;
+}
+
+.nut-dangnhap{
+  width: 100%;
+  height: 45px;
+  background: #162938;
+  border: none;
+  outline: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1em;
+  color: #fff;
+  font-weight: 500;
+}
+
+.social-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 0 14px;
+  color: #8a97a3;
+  font-size: 0.85em;
+}
+.social-divider::before,
+.social-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #dfe3e7;
+}
+
+.social-login-row {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 6px;
+}
+
+.social-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid #e0e4e8;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.social-btn:active {
+  transform: scale(0.93);
+}
+.social-btn:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.social-btn.google { color: #EA4335; }
+.social-btn.facebook { color: #1877F2; }
+.social-btn.github { color: #181717; }
+.social-btn.x { color: #000; }
+
+.dangky{
+  font-size: .9em;
+  color: #162938;
+  text-align: center;
+  font-weight: 500;
+  margin: 25px 0 10px;
+}
+
+.dangky p {
+  color: #162938;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.dangky a{
+  color: #fff;
+}
+
+.dangky p a:hover{
+  text-decoration: underline;
+}
+
+/* Đăng ký */
+.khung-reg h2{
+  font-size: 2em;
+  color: #162938;
+  text-align: center;
+}
+
+.khung-reg-kieu{
+  position: relative;
+  width: 100%;
+  height: 50px;
+  border-bottom: 2px solid #162938;
+  margin: 30px 0%;
+}
+
+.khung-reg-kieu label{
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  font-size: 1em;
+  color: #162938;
+  font-weight: 500;
+  pointer-events: none;
+  transition: .5s;
+}
+
+.khung-reg-kieu input:focus~label,
+.khung-reg-kieu input:valid~label {
+  top: -5px;
+}
+
+.khung-reg-kieu input{
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 1em;
+  color: #162938;
+  font-weight: 600;
+  padding: 0 35px 0 5px;
+}
+
+.khung-reg-kieu .icon{
+  position: absolute;
+  right: 8px;
+  font-size: 1.2em;
+  color: #162938;
+  line-height: 57px;
+}
+
+.dangnhap{
+  font-size: .9em;
+  color: #162938;
+  font-weight: 500;
+  margin: -15px 0 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.dangnhap p a{
+  color: #fff;
+  text-decoration: none;
+}
+
+.dangnhap p a:hover{
+  text-decoration: underline;
+}
+
+.nut-dangky{
+  width: 100%;
+  height: 45px;
+  background: #162938;
+  border: none;
+  outline: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1em;
+  color: #fff;
+  font-weight: 500;
+}
+  </style>
+</head>
+<body>
+  <!-- Màn hình chờ trong lúc kiểm tra đăng nhập, tránh nháy form login trước khi redirect -->
+  <div id="auth-check-overlay" style="
+    position: fixed; inset: 0; z-index: 99999;
+    background: #000;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Inter', -apple-system, sans-serif;
+  ">
+    <div style="
+      width: min(90vw, 400px);
+      padding: 56px 40px;
+      border-radius: 32px;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(24px) saturate(150%);
+      -webkit-backdrop-filter: blur(24px) saturate(150%);
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1);
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center;
+    ">
+      <div style="
+        width: 72px; height: 72px;
+        border: 5px solid rgba(255,255,255,0.15);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: authCheckSpin 0.8s linear infinite;
+        margin-bottom: 30px;
+      "></div>
+      <div style="color: #fff; font-size: 21px; font-weight: 700; margin-bottom: 9px;">
+        Đang đăng nhập...
+      </div>
+      <div style="color: rgba(255,255,255,0.5); font-size: 15px;" id="auth-check-countdown">
+        Ước tính còn 2 giây
+      </div>
+    </div>
+  </div>
+
+  <!-- Popup thứ 2: kiểm tra bản cập nhật, chạy sau khi xác nhận đăng nhập xong -->
+  <div id="update-check-overlay" style="
+    position: fixed; inset: 0; z-index: 99999;
+    background: #000;
+    display: none; align-items: center; justify-content: center;
+    font-family: 'Inter', -apple-system, sans-serif;
+  ">
+    <div style="
+      width: min(90vw, 400px);
+      padding: 56px 40px;
+      border-radius: 32px;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(24px) saturate(150%);
+      -webkit-backdrop-filter: blur(24px) saturate(150%);
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1);
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center;
+    ">
+      <div style="
+        width: 72px; height: 72px;
+        border: 5px solid rgba(255,255,255,0.15);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: authCheckSpin 0.8s linear infinite;
+        margin-bottom: 30px;
+      "></div>
+      <div style="color: #fff; font-size: 21px; font-weight: 700; margin-bottom: 9px;">
+        Đang kiểm tra bản cập nhật...
+      </div>
+      <div style="color: rgba(255,255,255,0.5); font-size: 15px;" id="update-check-countdown">
+        Ước tính còn 2 giây
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes authCheckSpin { to { transform: rotate(360deg); } }
+  </style>
+
+  <header>
+    <h2 class="logo">AI Chater</h2>
+    <nav class="thanhtren">
+      <button class="nutdangnhap">Đăng nhập</button>
+    </nav>
+  </header>
+  
+  <div class="khung">
+    <span class="icon-tat"><i class="fa-solid fa-close"></i></span>
+    <div class="khung-login">
+      <h2>Đăng nhập</h2>
+      <form action="#">
+        <div class="khung-login-kieu">
+          <span class="icon"><i class="fa-solid fa-envelope"></i></span>
+          <input type="email" required/>
+          <label>Email</label>
+        </div>
+        <div class="khung-login-kieu">
+          <span class="icon"><i class="fa-solid fa-lock"></i></span>
+          <input type="password" required/>
+          <label>Mật khẩu</label>
+        </div>
+        <div class="quenmatkhau">
+          <a href="#"> Quên mật khẩu òi :(</a>
+        </div>
+        <button type="submit" class="nut-dangnhap">Đăng nhập</button>
+
+        <div class="social-divider">Hoặc đăng nhập bằng</div>
+        <div class="social-login-row">
+          <button type="button" class="social-btn google" id="btn-google-login" title="Google"><i class="fa-brands fa-google"></i></button>
+          <button type="button" class="social-btn facebook" id="btn-facebook-login" title="Facebook"><i class="fa-brands fa-facebook-f"></i></button>
+          <button type="button" class="social-btn github" id="btn-github-login" title="GitHub"><i class="fa-brands fa-github"></i></button>
+          <button type="button" class="social-btn x" id="btn-x-login" title="X"><i class="fa-brands fa-x-twitter"></i></button>
+        </div>
+
+        <div class="dangky">
+          <p>Hỏng có acc Phú oi...~<br><a href="#" class="dangky-link">  Đăng ký</a></p>
+        </div>
+      </form>
+    </div>
+
+    <div class="khung-reg">
+      <h2>Đăng ký</h2>
+      <form action="#">
+        <div class="khung-reg-kieu">
+          <span class="icon"><i class="fa-solid fa-user"></i></span>
+          <input type="text" required/>
+          <label>Tên của bạn ^^</label>
+        </div>
+        <div class="khung-reg-kieu">
+          <span class="icon"><i class="fa-solid fa-envelope"></i></span>
+          <input type="email" required/>
+          <label>Email của bạn^^</label>
+        </div>
+        <div class="khung-reg-kieu">
+          <span class="icon"><i class="fa-solid fa-lock"></i></span>
+          <input type="password" required/>
+          <label>Đặt mật khẩu^^</label>
+        </div>
+        <button type="submit" class="nut-dangky">Đăng Ký</button>
+        <div class="dangnhap">
+          <p>Có acc ròi Phú oi...~<br><a href="#" class="dangnhap-link">  Đăng nhập</a></p>
+        </div>
+      </form>
+    </div>
+    
+  </div>
+  
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserLocalPersistence, onAuthStateChanged, GoogleAuthProvider, FacebookAuthProvider, GithubAuthProvider, TwitterAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+import { autoReloadOnSync, broadcastReload } from './sync.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA_XJP_fmStr4GYA7pD51I_SS5TXeDXdUM",
+  authDomain: "aichat-fc13c.firebaseapp.com",
+  projectId: "aichat-fc13c",
+  storageBucket: "aichat-fc13c.firebasestorage.app",
+  messagingSenderId: "177676055139",
+  appId: "1:177676055139:web:f504149bdea3ce7b6cfe56"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+setPersistence(auth, browserLocalPersistence);
+const db = getFirestore(app);
+
+// Timeout race: nếu lệnh Firestore quá lâu (mạng yếu) thì trả fallback thay vì treo vô hạn
+function withTimeout(promise, ms, fallback) {
+  return Promise.race([
+    promise,
+    new Promise((resolve) => setTimeout(() => resolve(fallback), ms))
+  ]);
+}
+
+// Đồng hồ đếm ngược ước tính, chỉ mang tính hiển thị (không chặn logic thật đang chạy song song)
+function runCountdown(elementId, seconds) {
+  const el = document.getElementById(elementId);
+  let remaining = seconds;
+  el.textContent = `Ước tính còn ${remaining} giây`;
+  const interval = setInterval(() => {
+    remaining -= 1;
+    if (remaining <= 0) {
+      el.textContent = 'Sắp xong...';
+      clearInterval(interval);
+    } else {
+      el.textContent = `Ước tính còn ${remaining} giây`;
+    }
+  }, 1000);
+  return interval;
+}
+
+// Kiểm tra version, nhận sẵn snapshot đã fetch để khỏi gọi getDoc lần 2
+function checkAppVersionFromSnap(snap) {
+  const LOCAL_VERSION_KEY = 'aichater_app_version';
+  if (!snap || !snap.exists()) return false;
+  const remoteVersion = snap.data().version;
+  const localVersion = localStorage.getItem(LOCAL_VERSION_KEY);
+  if (localVersion === null) {
+    localStorage.setItem(LOCAL_VERSION_KEY, String(remoteVersion));
+    return false;
+  }
+  return String(remoteVersion) !== String(localVersion);
+}
+
+async function proceedToUpdateCheckThenRedirect(destination, versionSnap) {
+  document.getElementById('auth-check-overlay').style.display = 'none';
+  document.getElementById('update-check-overlay').style.display = 'flex';
+
+  const countdownTimer = runCountdown('update-check-countdown', 2);
+  const needsUpdate = checkAppVersionFromSnap(versionSnap);
+  clearInterval(countdownTimer);
+
+  if (needsUpdate) {
+    localStorage.setItem('aichater_app_version_pending_notice', '1');
+  }
+
+  window.location.href = destination;
+}
+
+// Check nếu đã đăng nhập rồi thì redirect luôn, chưa thì mới hiện form login
+runCountdown('auth-check-countdown', 2);
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    try {
+      // Gộp 2 lệnh getDoc chạy SONG SONG thay vì tuần tự + timeout 6s tránh treo vô hạn
+      const [userSnap, versionSnap] = await Promise.all([
+        withTimeout(getDoc(doc(db, 'users', user.uid)), 6000, null),
+        withTimeout(getDoc(doc(db, 'config', 'appVersion')), 6000, null)
+      ]);
+
+      if (userSnap && userSnap.exists() && userSnap.data().onboardingDone) {
+        await proceedToUpdateCheckThenRedirect('home.html', versionSnap);
+      } else if (userSnap) {
+        await proceedToUpdateCheckThenRedirect('onboarding.html', versionSnap);
+      } else {
+        // Timeout khi đọc users -> không kẹt, cho vào home mặc định (an toàn hơn onboarding lặp)
+        await proceedToUpdateCheckThenRedirect('home.html', versionSnap);
+      }
+    } catch (e) {
+      document.getElementById('auth-check-overlay').style.display = 'none';
+    }
+  } else {
+    document.getElementById('auth-check-overlay').style.display = 'none';
+  }
+});
+
+const khung = document.querySelector('.khung');
+const dangnhapLink = document.querySelector('.dangnhap-link');
+const dangkyLink = document.querySelector('.dangky-link');
+const modangnhap = document.querySelector('.nutdangnhap');
+const icontat = document.querySelector('.icon-tat');
+
+dangkyLink.addEventListener('click', () => khung.classList.add('bat'));
+dangnhapLink.addEventListener('click', () => khung.classList.remove('bat'));
+modangnhap.addEventListener('click', () => khung.classList.add('bat-popup'));
+icontat.addEventListener('click', () => khung.classList.remove('bat-popup'));
+
+// Đăng ký
+document.querySelector('.nut-dangky').addEventListener('click', async (e) => {
+  e.preventDefault();
+  const inputs = document.querySelectorAll('.khung-reg-kieu input');
+  const ten = inputs[0].value.trim();
+  const email = inputs[1].value.trim();
+  const matkhau = inputs[2].value.trim();
+  if (!ten || !email || !matkhau) { alert('Điền đầy đủ thông tin nha!'); return; }
+  try {
+    const uc = await createUserWithEmailAndPassword(auth, email, matkhau);
+    await setDoc(doc(db, 'users', uc.user.uid), {
+      ten, email,
+      taoLuc: new Date().toISOString()
+    });
+    alert('Đăng ký thành công! Đăng nhập đi nha :))');
+    khung.classList.remove('bat');
+  } catch(err) {
+    alert('Lỗi: ' + err.message);
+  }
+});
+
+// Đăng nhập
+document.querySelector('.nut-dangnhap').addEventListener('click', async (e) => {
+  e.preventDefault();
+  const inputs = document.querySelectorAll('.khung-login-kieu input');
+  const email = inputs[0].value.trim();
+  const matkhau = inputs[1].value.trim();
+  if (!email || !matkhau) { alert('Điền email và mật khẩu nha!'); return; }
+  try {
+    const uc = await signInWithEmailAndPassword(auth, email, matkhau);
+    await redirectAfterLogin(uc.user);
+  } catch(err) {
+    alert('Sai email hoặc mật khẩu rồi :((');
+  }
+});
+
+// ===== Đăng nhập qua mạng xã hội =====
+async function redirectAfterLogin(user) {
+  const snap = await getDoc(doc(db, 'users', user.uid));
+  if (snap.exists() && snap.data().onboardingDone) {
+    window.location.href = 'home.html';
+  } else {
+    // Tài khoản mới qua social login -> tạo bản ghi user cơ bản nếu chưa có
+    if (!snap.exists()) {
+      await setDoc(doc(db, 'users', user.uid), {
+        ten: user.displayName || 'Người dùng mới',
+        email: user.email || '',
+        taoLuc: new Date().toISOString()
+      });
+    }
+    window.location.href = 'onboarding.html';
+  }
+}
+
+async function socialSignIn(provider) {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    await redirectAfterLogin(result.user);
+  } catch (err) {
+    if (err.code === 'auth/account-exists-with-different-credential') {
+      alert('Email này đã đăng ký bằng phương thức khác rồi, thử đăng nhập cách khác nha!');
+    } else if (err.code === 'auth/popup-closed-by-user') {
+      // Người dùng tự đóng popup, không cần báo lỗi
+    } else {
+      alert('Lỗi đăng nhập: ' + err.message);
+    }
+  }
+}
+
+document.getElementById('btn-google-login').addEventListener('click', () => {
+  socialSignIn(new GoogleAuthProvider());
+});
+document.getElementById('btn-facebook-login').addEventListener('click', () => {
+  socialSignIn(new FacebookAuthProvider());
+});
+document.getElementById('btn-github-login').addEventListener('click', () => {
+  socialSignIn(new GithubAuthProvider());
+});
+document.getElementById('btn-x-login').addEventListener('click', () => {
+  socialSignIn(new TwitterAuthProvider());
+});
+
+autoReloadOnSync();
+
+</script>
+</body>
+</html>
