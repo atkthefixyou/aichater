@@ -593,14 +593,15 @@ header {
   transition: all 0.25s ease;
 }
 
-/* ===== LIQUID GLASS — áp dụng cho TẤT CẢ nút trong app ===== */
+/* ===== LIQUID GLASS — áp dụng cho TẤT CẢ nút trong app (bản tăng độ đậm) ===== */
 #app button {
   position: relative;
   z-index: 0;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.35);
+  border: 1px solid rgba(255,255,255,0.9);
   overflow: hidden;
   isolation: isolate;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.16);
 }
 
 #app button::before {
@@ -610,9 +611,12 @@ header {
   pointer-events: none;
   border-radius: inherit;
   z-index: -2;
-  backdrop-filter: blur(14px) saturate(1.6);
-  -webkit-backdrop-filter: blur(14px) saturate(1.6);
-  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(16px) saturate(1.8);
+  -webkit-backdrop-filter: blur(16px) saturate(1.8);
+  background: linear-gradient(135deg,
+    rgba(255,255,255,0.55) 0%,
+    rgba(255,255,255,0.18) 45%,
+    rgba(255,255,255,0.35) 100%);
 }
 
 #app button::after {
@@ -623,9 +627,9 @@ header {
   border-radius: inherit;
   z-index: -1;
   box-shadow:
-    inset 1px 1px 1px rgba(255,255,255,0.5),
-    inset -1px -1px 1px rgba(0,0,0,0.08),
-    0 2px 6px rgba(0,0,0,0.12);
+    inset 1.5px 1.5px 1.5px rgba(255,255,255,0.85),
+    inset -1.5px -1.5px 1.5px rgba(0,0,0,0.12),
+    0 2px 8px rgba(0,0,0,0.18);
 }
 
 #app button > * {
@@ -649,17 +653,24 @@ header {
   border-color: var(--accent);
 }
 
-/* Theme tối: viền/ánh sáng dịu hơn để không bị chói */
+/* Theme tối: viền/ánh sáng dịu hơn để không bị chói, nhưng vẫn đủ tương phản với nền đen */
 body.theme-cold #app button {
-  background: rgba(255,255,255,0.05);
-  border-color: rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.32);
+}
+
+body.theme-cold #app button::before {
+  background: linear-gradient(135deg,
+    rgba(255,255,255,0.22) 0%,
+    rgba(255,255,255,0.06) 45%,
+    rgba(255,255,255,0.14) 100%);
 }
 
 body.theme-cold #app button::after {
   box-shadow:
-    inset 1px 1px 1px rgba(255,255,255,0.18),
-    inset -1px -1px 1px rgba(0,0,0,0.25),
-    0 2px 6px rgba(0,0,0,0.3);
+    inset 1.5px 1.5px 1.5px rgba(255,255,255,0.25),
+    inset -1.5px -1.5px 1.5px rgba(0,0,0,0.3),
+    0 2px 8px rgba(0,0,0,0.35);
 }
 
 #plus-btn {
