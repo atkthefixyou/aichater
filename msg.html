@@ -582,15 +582,43 @@ header {
 #input-bar {
   position: relative;
   z-index: 5;
-  background: transparent;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid var(--border2);
   padding: 10px 12px 20px;
   display: flex;
   align-items: center;
   flex-shrink: 0;
   transition: all 0.25s ease;
+  isolation: isolate;
+}
+
+#input-bar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -2;
+  backdrop-filter: blur(24px) saturate(1.6);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0.35) 0%,
+    rgba(255,255,255,0.55) 100%);
+  border-top: 1px solid rgba(255,255,255,0.6);
+}
+
+#input-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  pointer-events: none;
+  z-index: -1;
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
+}
+
+body.theme-cold #input-bar::before {
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0.04) 0%,
+    rgba(255,255,255,0.08) 100%);
+  border-top-color: rgba(255,255,255,0.12);
 }
 
 /* ===== LIQUID GLASS — áp dụng cho TẤT CẢ nút trong app (bản tương phản nền sáng) ===== */
@@ -721,19 +749,58 @@ body.theme-cold #app button::after {
 }
 
 #input-wrap {
+  position: relative;
+  z-index: 0;
   flex: 1;
-  background: var(--surface2);
-  border: 1px solid var(--border2);
   border-radius: 22px;
   display: flex;
   align-items: flex-end;
   padding: 9px 13px;
   transition: border-color 0.15s;
   gap: 8px;
+  isolation: isolate;
+  overflow: hidden;
+  background: rgba(255,255,255,0.4);
+  border: 1.5px solid rgba(255,255,255,0.85);
+  box-shadow:
+    inset 1.5px 1.5px 2px rgba(255,255,255,0.9),
+    inset -1.5px -1.5px 2px rgba(0,0,0,0.06),
+    0 2px 8px rgba(0,0,0,0.08);
+}
+
+#input-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: -1;
+  backdrop-filter: blur(16px) saturate(1.6);
+  -webkit-backdrop-filter: blur(16px) saturate(1.6);
+  background: linear-gradient(135deg,
+    rgba(255,255,255,0.5) 0%,
+    rgba(255,255,255,0.15) 50%,
+    rgba(255,255,255,0.35) 100%);
 }
 
 #input-wrap:focus-within {
   border-color: var(--accent);
+}
+
+body.theme-cold #input-wrap {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.22);
+  box-shadow:
+    inset 1.5px 1.5px 1.5px rgba(255,255,255,0.15),
+    inset -1.5px -1.5px 1.5px rgba(0,0,0,0.25),
+    0 2px 8px rgba(0,0,0,0.3);
+}
+
+body.theme-cold #input-wrap::before {
+  background: linear-gradient(135deg,
+    rgba(255,255,255,0.14) 0%,
+    rgba(255,255,255,0.03) 50%,
+    rgba(255,255,255,0.1) 100%);
 }
 
 #txt {
@@ -885,35 +952,12 @@ body.theme-cold #app button::after {
   pointer-events: none;
 }
 
-#input-bar.focus-mode .back-input-btn {
-  display: flex !important;
-}
-
 #input-bar.focus-mode #input-wrap {
   flex: 1;
   margin-left: 0;
   margin-right: 0;
 }
 
-.back-input-btn {
-  display: none;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: none;
-  border: none;
-  color: var(--accent);
-  font-size: 18px;
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: transform 0.15s;
-}
-
-.back-input-btn:active {
-  transform: scale(0.85);
-}
 
 /* ===== GREETING ===== */
 .greeting-card {
@@ -2906,9 +2950,6 @@ body.theme-cold #app button::after {
   </div>
 
 <div id="input-bar">
-  <button class="back-input-btn" id="back-input-btn">
-    <i class="fa-solid fa-arrow-left"></i>
-  </button>
 
   <button id="plus-btn" title="Thêm">
     <i class="fa-solid fa-plus"></i>
@@ -5685,7 +5726,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // ── INPUT BAR FOCUS MODE ──────────────────────────────
 const inputBar = document.getElementById('input-bar');
 const txtInput = document.getElementById('txt');
-const backBtn = document.getElementById('back-input-btn');
+
 
 txtInput.addEventListener('focus', () => {
   inputBar.classList.add('focus-mode');
@@ -5698,10 +5739,6 @@ txtInput.addEventListener('blur', () => {
   }
 });
 
-backBtn.addEventListener('click', (e) => {
-  e.preventDefault();
-  inputBar.classList.remove('focus-mode');
-});
 
 document.addEventListener('click', (e) => {
   const isInsideInput = inputBar.contains(e.target);
