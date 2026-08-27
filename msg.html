@@ -3963,7 +3963,7 @@ async function callAI(userMsg, imageBase64 = null, imageMimeType = null) {
 
 // ── CALL GEMINI ──────────────────────────────────────
 async function callGemini(userMsg, imageBase64 = null, imageMimeType = null) {
-  const model = currentModelId || 'gemini-2.0-flash';
+  const model = 'chat'; 
   
   const geminiHistory = hist.map((m, idx) => {
     const isLastUserMsg = idx === hist.length - 1 && m.role === 'user';
