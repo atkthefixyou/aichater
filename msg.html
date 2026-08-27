@@ -593,15 +593,17 @@ header {
   transition: all 0.25s ease;
 }
 
-/* ===== LIQUID GLASS — áp dụng cho TẤT CẢ nút trong app (bản tăng độ đậm) ===== */
+/* ===== LIQUID GLASS — áp dụng cho TẤT CẢ nút trong app (bản tương phản nền sáng) ===== */
 #app button {
   position: relative;
   z-index: 0;
-  background: rgba(255,255,255,0.35);
-  border: 1px solid rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.55);
+  border: 1.5px solid rgba(255,255,255,0.95);
   overflow: hidden;
   isolation: isolate;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.16);
+  box-shadow:
+    0 1px 3px rgba(0,0,0,0.10),
+    0 6px 16px rgba(0,0,0,0.14);
 }
 
 #app button::before {
@@ -611,30 +613,53 @@ header {
   pointer-events: none;
   border-radius: inherit;
   z-index: -2;
-  backdrop-filter: blur(16px) saturate(1.8);
-  -webkit-backdrop-filter: blur(16px) saturate(1.8);
+  backdrop-filter: blur(18px) saturate(1.8);
+  -webkit-backdrop-filter: blur(18px) saturate(1.8);
   background: linear-gradient(135deg,
-    rgba(255,255,255,0.55) 0%,
-    rgba(255,255,255,0.18) 45%,
-    rgba(255,255,255,0.35) 100%);
+    rgba(255,255,255,0.7) 0%,
+    rgba(255,255,255,0.25) 45%,
+    rgba(255,255,255,0.5) 100%);
 }
 
 #app button::after {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: -1.5px;
   pointer-events: none;
   border-radius: inherit;
   z-index: -1;
+  border: 1px solid rgba(0,0,0,0.06);
   box-shadow:
-    inset 1.5px 1.5px 1.5px rgba(255,255,255,0.85),
-    inset -1.5px -1.5px 1.5px rgba(0,0,0,0.12),
-    0 2px 8px rgba(0,0,0,0.18);
+    inset 1.5px 1.5px 2px rgba(255,255,255,0.95),
+    inset -1.5px -1.5px 2px rgba(0,0,0,0.10),
+    0 3px 10px rgba(0,0,0,0.16);
 }
 
 #app button > * {
   position: relative;
   z-index: 1;
+}
+
+/* Theme tối: giữ tông kính tối, viền sáng dịu */
+body.theme-cold #app button {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.32);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 6px 16px rgba(0,0,0,0.35);
+}
+
+body.theme-cold #app button::before {
+  background: linear-gradient(135deg,
+    rgba(255,255,255,0.22) 0%,
+    rgba(255,255,255,0.06) 45%,
+    rgba(255,255,255,0.14) 100%);
+}
+
+body.theme-cold #app button::after {
+  border-color: rgba(0,0,0,0.2);
+  box-shadow:
+    inset 1.5px 1.5px 1.5px rgba(255,255,255,0.25),
+    inset -1.5px -1.5px 1.5px rgba(0,0,0,0.3),
+    0 2px 8px rgba(0,0,0,0.35);
 }
 
 #input-pill {
@@ -651,26 +676,6 @@ header {
 
 #input-pill:focus-within {
   border-color: var(--accent);
-}
-
-/* Theme tối: viền/ánh sáng dịu hơn để không bị chói, nhưng vẫn đủ tương phản với nền đen */
-body.theme-cold #app button {
-  background: rgba(255,255,255,0.12);
-  border-color: rgba(255,255,255,0.32);
-}
-
-body.theme-cold #app button::before {
-  background: linear-gradient(135deg,
-    rgba(255,255,255,0.22) 0%,
-    rgba(255,255,255,0.06) 45%,
-    rgba(255,255,255,0.14) 100%);
-}
-
-body.theme-cold #app button::after {
-  box-shadow:
-    inset 1.5px 1.5px 1.5px rgba(255,255,255,0.25),
-    inset -1.5px -1.5px 1.5px rgba(0,0,0,0.3),
-    0 2px 8px rgba(0,0,0,0.35);
 }
 
 #plus-btn {
