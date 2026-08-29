@@ -668,19 +668,63 @@ body.theme-cold #app button::after {
 }
 
 #input-pill {
+  position: relative;
+  z-index: 0;
   flex: 1;
+  border-radius: 22px;
   display: flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  border-radius: 999px;
-  padding: 6px 8px;
-  transition: border-color 0.15s;
+  align-items: flex-end;
+  padding: 9px 13px;
+  gap: 8px;
+  isolation: isolate;
+  overflow: hidden;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow:
+    inset 0 1px 0px rgba(255,255,255,0.75),
+    0 0 9px rgba(0,0,0,0.2),
+    0 3px 8px rgba(0,0,0,0.15);
+  transition: background 0.3s, border-color 0.15s;
+}
+
+#input-pill::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+  background: linear-gradient(to bottom right,
+    rgba(255,255,255,0.6) 0%,
+    transparent 50%,
+    transparent 100%);
+  opacity: 0.7;
+}
+
+#input-pill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+  background: linear-gradient(to top left,
+    rgba(255,255,255,0.3) 0%,
+    transparent 50%,
+    transparent 100%);
+  opacity: 0.5;
 }
 
 #input-pill:focus-within {
+  background: rgba(255,255,255,0.85);
   border-color: var(--accent);
+}
+
+body.theme-cold #input-pill {
+  background: rgba(0,0,0,0.2);
+  border-color: rgba(255,255,255,0.5);
 }
 
 #plus-btn {
