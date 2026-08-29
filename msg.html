@@ -676,43 +676,15 @@ body.theme-cold #app button::after {
   align-items: flex-end;
   padding: 9px 13px;
   gap: 8px;
-  isolation: isolate;
-  overflow: hidden;
-  background: rgba(255,255,255,0.25);
-  border: 1px solid rgba(255,255,255,0.6);
-  backdrop-filter: blur(20px) saturate(1.8);
-  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  background: rgba(255,255,255,0.78);
+  border: 2px solid rgba(255,255,255,1);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   box-shadow:
-    0 8px 20px rgba(0,0,0,0.15),
-    0 2px 6px rgba(0,0,0,0.1);
-}
-
-#input-pill::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 8%;
-  right: 8%;
-  height: 1.5px;
-  border-radius: 2px;
-  pointer-events: none;
-  z-index: 2;
-  background: rgba(255,255,255,0.95);
-  box-shadow: 0 0 6px rgba(255,255,255,0.8);
-}
-
-#input-pill::after {
-  content: "";
-  position: absolute;
-  top: 1px;
-  left: 4px;
-  width: 40%;
-  height: 45%;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 2;
-  background: radial-gradient(ellipse at top left, rgba(255,255,255,0.5) 0%, transparent 70%);
-  filter: blur(4px);
+    0 1.5px 0 rgba(255,255,255,1) inset,
+    0 -8px 14px rgba(220,80,130,0.22) inset,
+    0 14px 32px rgba(180,40,90,0.35),
+    0 4px 10px rgba(180,40,90,0.22);
 }
 
 #input-pill:focus-within {
@@ -720,13 +692,21 @@ body.theme-cold #app button::after {
 }
 
 body.theme-cold #input-pill {
-  background: rgba(255,255,255,0.08);
-  border-color: rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.5);
+  box-shadow:
+    0 1.5px 0 rgba(255,255,255,0.4) inset,
+    0 -6px 12px rgba(0,0,0,0.25) inset,
+    0 14px 32px rgba(0,0,0,0.4),
+    0 4px 10px rgba(0,0,0,0.25);
 }
 
-body.theme-cold #input-pill::before {
-  background: rgba(255,255,255,0.5);
-  box-shadow: 0 0 6px rgba(255,255,255,0.4);
+body.theme-default #input-pill {
+  box-shadow:
+    0 1.5px 0 rgba(255,255,255,1) inset,
+    0 -8px 14px rgba(0,0,0,0.1) inset,
+    0 14px 32px rgba(0,0,0,0.16),
+    0 4px 10px rgba(0,0,0,0.1);
 }
 
 #plus-btn {
